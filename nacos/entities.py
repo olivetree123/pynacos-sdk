@@ -1,10 +1,9 @@
 import copy
-from typing import Dict, List
+from typing import List
 
 
 class Entity(object):
     """返回值基类"""
-
     def json(self):
         r = copy.deepcopy(self.__dict__)
         for key, val in r.items():
@@ -19,8 +18,8 @@ class Entity(object):
 
 class ServiceEntity(Entity):
     """服务"""
-
-    def __init__(self, name, group_name, namespace_id, metadata, clusters, selector, protect_threshold):
+    def __init__(self, name, group_name, namespace_id, metadata, clusters,
+                 selector, protect_threshold):
         if not name:
             raise ValueError("name should not be null")
         if not group_name:
@@ -28,11 +27,17 @@ class ServiceEntity(Entity):
         if not namespace_id:
             raise ValueError("namespace_id should not be null")
         if not isinstance(metadata, (dict, type(None))):
-            raise TypeError("metadata should be type of dict, but {} found".format(type(metadata)))
+            raise TypeError(
+                "metadata should be type of dict, but {} found".format(
+                    type(metadata)))
         if not isinstance(clusters, (list, type(None))):
-            raise TypeError("clusters should be type of list, but {} found".format(type(clusters)))
+            raise TypeError(
+                "clusters should be type of list, but {} found".format(
+                    type(clusters)))
         if not isinstance(selector, (dict, type(None))):
-            raise TypeError("selector should be type of dict, but {} found".format(type(selector)))
+            raise TypeError(
+                "selector should be type of dict, but {} found".format(
+                    type(selector)))
         self.name = name
         self.group_name = group_name
         self.namespace_id = namespace_id
@@ -55,7 +60,6 @@ class ServiceEntity(Entity):
 
 
 class ServiceListEntity(Entity):
-
     def __init__(self, count, doms):
         self.count = count
         self.doms = doms
@@ -70,8 +74,8 @@ class ServiceListEntity(Entity):
 
 class InstanceEntity(Entity):
     """实例"""
-
-    def __init__(self, instance_id, service, ip, port, cluster_name, healthy, metadata):
+    def __init__(self, instance_id, service, ip, port, cluster_name, healthy,
+                 metadata):
         if not instance_id:
             raise ValueError("instance_id should not be null")
         if not service:
@@ -83,9 +87,13 @@ class InstanceEntity(Entity):
         if not cluster_name:
             raise ValueError("cluster_name should not be null")
         if not isinstance(healthy, bool):
-            raise TypeError("healthy should be type of bool, but {} found".format(type(healthy)))
+            raise TypeError(
+                "healthy should be type of bool, but {} found".format(
+                    type(healthy)))
         if not isinstance(metadata, (dict, type(None))):
-            raise TypeError("metadata should be type of dict, but {} found".format(type(metadata)))
+            raise TypeError(
+                "metadata should be type of dict, but {} found".format(
+                    type(metadata)))
         self.instance_id = instance_id
         self.service = service
         self.ip = ip
@@ -108,7 +116,6 @@ class InstanceEntity(Entity):
 
 
 class HostEntity(Entity):
-
     def __init__(self, ip, port, weight, instance_id, valid, metadata):
         self.ip = ip
         self.port = port
@@ -130,9 +137,8 @@ class HostEntity(Entity):
 
 
 class InstanceListEntity(Entity):
-
-    def __init__(self, dom, env, hosts: List[HostEntity], checksum, clusters, cache_millis, last_ref_time,
-                 use_specified_url):
+    def __init__(self, dom, env, hosts: List[HostEntity], checksum, clusters,
+                 cache_millis, last_ref_time, use_specified_url):
         self.dom = dom
         self.env = env
         self.hosts = hosts
@@ -145,7 +151,7 @@ class InstanceListEntity(Entity):
     @classmethod
     def loads(cls, **kwargs):
         hosts = kwargs.get("hosts")
-        hosts = [HostEntity.loads(host) for host in hosts] if hosts else []
+        hosts = [HostEntity.loads(**host) for host in hosts] if hosts else []
         return cls(
             dom=kwargs.get("dom"),
             env=kwargs.get("env"),
@@ -159,8 +165,8 @@ class InstanceListEntity(Entity):
 
 
 class ServerEntity(Entity):
-
-    def __init__(self, ip, port, key, site, weight, alive, ad_weight, last_ref_time, last_ref_time_str):
+    def __init__(self, ip, port, key, site, weight, alive, ad_weight,
+                 last_ref_time, last_ref_time_str):
         self.ip = ip
         self.port = port
         self.key = key
@@ -187,8 +193,8 @@ class ServerEntity(Entity):
 
 
 class LeaderEntity(Entity):
-
-    def __init__(self, ip, state, term, vote_for, leader_due_ms, heartbeat_due_ms):
+    def __init__(self, ip, state, term, vote_for, leader_due_ms,
+                 heartbeat_due_ms):
         self.ip = ip
         self.state = state
         self.term = term
@@ -209,9 +215,8 @@ class LeaderEntity(Entity):
 
 
 class MetricsEntity(Entity):
-
-    def __init__(self, service_count, instance_count, load, mem, cpu, status, responsible_service_count,
-                 responsible_instance_count):
+    def __init__(self, service_count, instance_count, load, mem, cpu, status,
+                 responsible_service_count, responsible_instance_count):
         self.mem = mem
         self.cpu = cpu
         self.load = load

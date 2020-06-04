@@ -17,13 +17,21 @@ try:
     param = ServiceRegisterParam("hello")
     status = nacos.service_register(param)
     print("register status = ", status)
+except ParamError as e:
+    print("param error")
+    print(e)
 except RequestError as e:
+    print("nacos error")
     print(e)
 
 try:
     param = ServiceListParam()
     services = nacos.service_list(param)
     print(services.json())
+except ParamError as e:
+    print("param error")
+    print(e)
 except RequestError as e:
+    print("nacos error")
     print(e)
 ```

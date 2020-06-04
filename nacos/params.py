@@ -1,15 +1,20 @@
 import json
+from .errors import ParamError
+
 
 class Param(object):
     """参数基类"""
-
     def json(self):
         return self.__dict__
 
 
 class ServiceRegisterParam(Param):
-
-    def __init__(self, service_name, group_name="", protect_threshold=0, metadata="", selector=None):
+    def __init__(self,
+                 service_name,
+                 group_name="",
+                 protect_threshold=0,
+                 metadata="",
+                 selector=None):
         self.serviceName = service_name
         self.groupName = group_name
         self.protectThreshold = protect_threshold
@@ -19,23 +24,26 @@ class ServiceRegisterParam(Param):
 
     def _validate(self):
         if not self.serviceName:
-            raise ValueError("service_name should not be null")
+            raise ParamError("service_name should not be null")
 
 
 class ServiceRemoveParam(Param):
-
     def __init__(self, service_name, group_name=""):
         self.serviceName = service_name
         self.groupName = group_name
 
     def _validate(self):
         if not self.serviceName:
-            raise ValueError("service_name should not be null")
+            raise ParamError("service_name should not be null")
 
 
 class ServiceUpdateParam(Param):
-
-    def __init__(self, service_name, group_name="", metadata="", protect_threshold=0, selector=None):
+    def __init__(self,
+                 service_name,
+                 group_name="",
+                 metadata="",
+                 protect_threshold=0,
+                 selector=None):
         self.serviceName = service_name
         self.groupName = group_name
         self.metadata = metadata
@@ -45,11 +53,10 @@ class ServiceUpdateParam(Param):
 
     def _validate(self):
         if not self.serviceName:
-            raise ValueError("service_name should not be null")
+            raise ParamError("service_name should not be null")
 
 
 class ServiceGetParam(Param):
-
     def __init__(self, service_name, group_name=""):
         self.serviceName = service_name
         self.groupName = group_name
@@ -57,11 +64,10 @@ class ServiceGetParam(Param):
 
     def _validate(self):
         if not self.serviceName:
-            raise ValueError("service_name should not be null")
+            raise ParamError("service_name should not be null")
 
 
 class ServiceListParam(Param):
-
     def __init__(self, group_name="", page_no=1, page_size=10):
         self.groupName = group_name
         self.pageNo = page_no
@@ -70,13 +76,16 @@ class ServiceListParam(Param):
 
     def _validate(self):
         if not isinstance(self.pageNo, int):
-            raise TypeError("page_no should be type of int, but {} found".format(type(self.page_no)))
+            raise TypeError(
+                "page_no should be type of int, but {} found".format(
+                    type(self.page_no)))
         if not isinstance(self.pageSize, int):
-            raise TypeError("page_size should be type of int, but {} found".format(type(self.page_size)))
+            raise TypeError(
+                "page_size should be type of int, but {} found".format(
+                    type(self.page_size)))
 
 
 class SwitchUpdateParam(Param):
-
     def __init__(self, entry, value, debug=False):
         self.entry = entry
         self.value = value
@@ -84,14 +93,21 @@ class SwitchUpdateParam(Param):
 
     def _validate(self):
         if not self.entry:
-            raise ValueError("entry should not be null")
+            raise ParamError("entry should not be null")
 
 
 class InstanceRegisterParam(Param):
-
-    def __init__(self, service_name: str, ip: str, port: int, group_name: str = None,
-                 weight: float = 0, enabled: bool = False, healthy: bool = True, metadata: str = "",
-                 cluster_name: str = "", ephemeral: bool = False):
+    def __init__(self,
+                 service_name: str,
+                 ip: str,
+                 port: int,
+                 group_name: str = None,
+                 weight: float = 0,
+                 enabled: bool = False,
+                 healthy: bool = True,
+                 metadata: str = "",
+                 cluster_name: str = "",
+                 ephemeral: bool = False):
         self.ip = ip
         self.port = port
         self.serviceName = service_name
@@ -106,22 +122,31 @@ class InstanceRegisterParam(Param):
 
     def _validate(self):
         if not self.serviceName:
-            raise ValueError("service_name should not be null")
+            raise ParamError("service_name should not be null")
         if not self.ip:
-            raise ValueError("ip should not be null")
+            raise ParamError("ip should not be null")
         if not self.port:
-            raise ValueError("port should not be null")
+            raise ParamError("port should not be null")
         if not isinstance(self.ip, str):
-            raise TypeError("ip should be type of str, but {} found".format(type(self.ip)))
+            raise TypeError("ip should be type of str, but {} found".format(
+                type(self.ip)))
         if not isinstance(self.port, int):
-            raise TypeError("port should be type of int, but {} found".format(type(self.port)))
+            raise TypeError("port should be type of int, but {} found".format(
+                type(self.port)))
         if not isinstance(self.weight, (int, float)):
-            raise TypeError("weight should be type of int or float, but {} found".format(type(self.weight)))
+            raise TypeError(
+                "weight should be type of int or float, but {} found".format(
+                    type(self.weight)))
 
 
 class InstanceRemoveParam(Param):
-
-    def __init__(self, service_name, ip, port, group_name="", cluster_name="", ephemeral=False):
+    def __init__(self,
+                 service_name,
+                 ip,
+                 port,
+                 group_name="",
+                 cluster_name="",
+                 ephemeral=False):
         self.ip = ip
         self.port = port
         self.service_name = service_name
@@ -132,20 +157,29 @@ class InstanceRemoveParam(Param):
 
     def _validate(self):
         if not self.serviceName:
-            raise ValueError("service_name should not be null")
+            raise ParamError("service_name should not be null")
         if not self.ip:
-            raise ValueError("ip should not be null")
+            raise ParamError("ip should not be null")
         if not self.port:
-            raise ValueError("port should not be null")
+            raise ParamError("port should not be null")
         if not isinstance(self.ip, str):
-            raise TypeError("ip should be type of str, but {} found".format(type(self.ip)))
+            raise TypeError("ip should be type of str, but {} found".format(
+                type(self.ip)))
         if not isinstance(self.port, int):
-            raise TypeError("port should be type of int, but {} found".format(type(self.port)))
+            raise TypeError("port should be type of int, but {} found".format(
+                type(self.port)))
 
 
 class InstanceUpdateParam(Param):
-
-    def __init__(self, service_name, ip, port, group_name, cluster_name, weight, metadata, enabled,
+    def __init__(self,
+                 service_name,
+                 ip,
+                 port,
+                 group_name,
+                 cluster_name,
+                 weight,
+                 metadata,
+                 enabled,
                  ephemeral=False):
         self.ip = ip
         self.port = port
@@ -160,24 +194,33 @@ class InstanceUpdateParam(Param):
 
     def _validate(self):
         if not self.serviceName:
-            raise ValueError("service_name should not be null")
+            raise ParamError("service_name should not be null")
         if not self.ip:
-            raise ValueError("ip should not be null")
+            raise ParamError("ip should not be null")
         if not self.port:
-            raise ValueError("port should not be null")
+            raise ParamError("port should not be null")
         if not isinstance(self.ip, str):
-            raise TypeError("ip should be type of str, but {} found".format(type(self.ip)))
+            raise TypeError("ip should be type of str, but {} found".format(
+                type(self.ip)))
         if not isinstance(self.port, int):
-            raise TypeError("port should be type of int, but {} found".format(type(self.port)))
+            raise TypeError("port should be type of int, but {} found".format(
+                type(self.port)))
         if not isinstance(self.weight, (int, float)):
-            raise TypeError("weight should be type of int or float, but {} found".format(type(self.weight)))
+            raise TypeError(
+                "weight should be type of int or float, but {} found".format(
+                    type(self.weight)))
         if not isinstance(self.metadata, dict):
-            raise TypeError("metadata should be type of dict, but {} found".format(type(self.metadata)))
+            raise TypeError(
+                "metadata should be type of dict, but {} found".format(
+                    type(self.metadata)))
 
 
 class InstanceListParam(Param):
-
-    def __init__(self, service_name, group_name="", clusters=None, healthy_only=False):
+    def __init__(self,
+                 service_name,
+                 group_name="",
+                 clusters=None,
+                 healthy_only=False):
         self.serviceName = service_name
         self.groupName = group_name
         self.clusters = clusters
@@ -186,12 +229,17 @@ class InstanceListParam(Param):
 
     def _validate(self):
         if not self.serviceName:
-            raise ValueError("service_name should not be null")
+            raise ParamError("service_name should not be null")
 
 
 class InstanceGetParam(Param):
-
-    def __init__(self, service_name, ip, port, group_name="", cluster="", healthy_only=False,
+    def __init__(self,
+                 service_name,
+                 ip,
+                 port,
+                 group_name="",
+                 cluster="",
+                 healthy_only=False,
                  ephemeral=False):
         self.ip = ip
         self.port = port
@@ -204,24 +252,34 @@ class InstanceGetParam(Param):
 
     def _validate(self):
         if not self.serviceName:
-            raise ValueError("service_name should not be null")
+            raise ParamError("service_name should not be null")
         if not self.ip:
-            raise ValueError("ip should not be null")
+            raise ParamError("ip should not be null")
         if not self.port:
-            raise ValueError("port should not be null")
+            raise ParamError("port should not be null")
         if not isinstance(self.ip, str):
-            raise TypeError("ip should be type of str, but {} found".format(type(self.ip)))
+            raise TypeError("ip should be type of str, but {} found".format(
+                type(self.ip)))
         if not isinstance(self.port, int):
-            raise TypeError("port should be type of int, but {} found".format(type(self.port)))
+            raise TypeError("port should be type of int, but {} found".format(
+                type(self.port)))
 
 
 class BeatInfo(Param):
-
-    def __init__(self, service_name, ip, port, weight, scheduled, cluster="", metadata=None):
+    def __init__(self,
+                 service_name,
+                 ip,
+                 port,
+                 weight,
+                 scheduled,
+                 cluster="",
+                 metadata=None):
         if not metadata:
             metadata = {}
         if not isinstance(metadata, dict):
-            raise TypeError("metadata should not be type of dict, but {} found".format(type(metadata)))
+            raise TypeError(
+                "metadata should not be type of dict, but {} found".format(
+                    type(metadata)))
         self.ip = ip
         self.port = port
         self.weight = weight
@@ -232,24 +290,27 @@ class BeatInfo(Param):
 
 
 class InstanceBeatParam(Param):
-
     def __init__(self, beat: BeatInfo):
-        """
-        beat 格式示例：{"cluster":"","ip":"gaojian.im","metadata":{},"port":6200,"scheduled":true,"serviceName":"hello","weight":1}
-        """
         if not isinstance(beat, BeatInfo):
-            raise TypeError("beat should not be type of BeatInfo, buf {} found".format(type(beat)))
+            raise TypeError(
+                "beat should not be type of BeatInfo, buf {} found".format(
+                    type(beat)))
         self.beat = json.dumps(beat.json())
         self.serviceName = beat.serviceName
 
     def _validate(self):
         if not self.serviceName:
-            raise ValueError("service_name should not be null")
+            raise ParamError("service_name should not be null")
 
 
 class HealthUpdateParam(Param):
-
-    def __init__(self, service_name, ip, port, healthy, group_name="", cluster_name=""):
+    def __init__(self,
+                 service_name,
+                 ip,
+                 port,
+                 healthy,
+                 group_name="",
+                 cluster_name=""):
         self.ip = ip
         self.port = port
         self.healthy = healthy
@@ -259,32 +320,34 @@ class HealthUpdateParam(Param):
 
     def _validate(self):
         if not self.ip:
-            raise ValueError("ip should not be null")
+            raise ParamError("ip should not be null")
         if not self.port:
-            raise ValueError("port should not be null")
+            raise ParamError("port should not be null")
         if not self.service_name:
-            raise ValueError("service_name should not be null")
+            raise ParamError("service_name should not be null")
         if not isinstance(self.ip, str):
-            raise TypeError("ip should be type of str, but {} found".format(type(self.ip)))
+            raise TypeError("ip should be type of str, but {} found".format(
+                type(self.ip)))
         if not isinstance(self.port, int):
-            raise TypeError("ip should be type of int, but {} found".format(type(self.port)))
+            raise TypeError("ip should be type of int, but {} found".format(
+                type(self.port)))
         if not isinstance(self.healthy, bool):
             raise TypeError("healthy should be type of bool")
 
 
 class ServerListParam(Param):
-
     def __init__(self, healthy=False):
         self.healthy = healthy
         self._validate()
 
     def _validate(self):
         if not isinstance(self.healthy, bool):
-            raise TypeError("healthy should be type of bool, but {} found".format(type(self.healthy)))
+            raise TypeError(
+                "healthy should be type of bool, but {} found".format(
+                    type(self.healthy)))
 
 
 class ConfigGetParam(Param):
-
     def __init__(self, data_id, group):
         self.group = group
         self.dataId = data_id
@@ -296,7 +359,6 @@ class ConfigGetParam(Param):
 
 
 class ConfigListenParam(Param):
-
     def __init__(self, data_id, group, content_md5):
         self.group = group
         self.dataId = data_id
@@ -313,7 +375,6 @@ class ConfigListenParam(Param):
 
 
 class ConfigPublishParam(Param):
-
     def __init__(self, data_id, group, content, tp=""):
         self.group = group
         self.dataId = data_id
@@ -327,7 +388,6 @@ class ConfigPublishParam(Param):
 
 
 class ConfigRemoveParam(Param):
-
     def __init__(self, data_id, group):
         self.group = group
         self.dataId = data_id
