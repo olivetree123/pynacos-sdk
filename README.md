@@ -1,5 +1,7 @@
 # pynacos-sdk
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7578f591597d48349f116893af440a7e)](https://app.codacy.com/manual/olivetree123/pynacos-sdk?utm_source=github.com&utm_medium=referral&utm_content=olivetree123/pynacos-sdk&utm_campaign=Badge_Grade_Dashboard)
+
 ## Tutorial
 ``` python
 from nacos import Nacos
