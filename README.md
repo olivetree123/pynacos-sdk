@@ -1,6 +1,6 @@
 # pynacos-sdk
 
-![pypi](https://img.shields.io/pypi/v/pynacos-sdk) ![Codacy Badge](https://api.codacy.com/project/badge/Grade/7578f591597d48349f116893af440a7e)
+![pypi](https://img.shields.io/pypi/v/pynacos-sdk?color=blue) ![Codacy Badge](https://api.codacy.com/project/badge/Grade/7578f591597d48349f116893af440a7e)
 
 ## Tutorial
 ``` python
