@@ -2,6 +2,9 @@
 
 ![pypi](https://img.shields.io/pypi/v/pynacos-sdk?color=blue) ![Codacy Badge](https://api.codacy.com/project/badge/Grade/7578f591597d48349f116893af440a7e)
 
+## Install
+> pip install pynacos-sdk
+
 ## Tutorial
 ``` python
 from nacos import Nacos
