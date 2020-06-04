@@ -10,17 +10,17 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name = "pynacos-sdk",
-    version = "0.1.0",
-    author = "olivetree",
-    license = "MIT",
-    packages = ["nacos"],
-    author_email = "olivetree123@163.com",
-    url = "https://github.com/olivetree123/pynacos-sdk",
-    description = "Nacos sdk for python",
-    long_description = long_description,
-    long_description_content_type = "text/markdown",
-    install_requires = [
+    name="pynacos-sdk",
+    version="0.2",
+    author="olivetree",
+    license="MIT",
+    packages=["nacos"],
+    author_email="olivetree123@163.com",
+    url="https://github.com/olivetree123/pynacos-sdk",
+    description="Nacos sdk for python",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    install_requires=[
         "winney==0.3.5",
     ],
 )
