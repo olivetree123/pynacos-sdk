@@ -3,7 +3,7 @@
 ## Tutorial
 ``` python
 from nacos import Nacos
-from nacos.errors import RequestError
+from nacos.errors import RequestError, ParamError
 from nacos.params import ServiceRegisterParam, ServiceListParam
 
 
