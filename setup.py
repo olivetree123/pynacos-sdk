@@ -11,7 +11,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name="pynacos-sdk",
-    version="0.2.1",
+    version="0.2.2",
     author="olivetree",
     license="MIT",
     packages=["nacos"],
@@ -21,6 +21,6 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     install_requires=[
-        "winney==0.3.5",
+        "winney>=0.3.5",
     ],
 )
