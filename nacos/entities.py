@@ -50,12 +50,12 @@ class ServiceEntity(Entity):
     def loads(cls, **kwargs):
         return cls(
             name=kwargs.get("name"),
-            group_name=kwargs.get("group_name"),
-            namespace_id=kwargs.get("namespace_id"),
+            group_name=kwargs.get("groupName"),
+            namespace_id=kwargs.get("namespaceId"),
             metadata=kwargs.get("metadata"),
             clusters=kwargs.get("clusters"),
             selector=kwargs.get("selector"),
-            protect_threshold=kwargs.get("protect_threshold"),
+            protect_threshold=kwargs.get("protectThreshold"),
         )
 
 
