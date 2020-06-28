@@ -4,7 +4,8 @@ from typing import Dict, List
 from .errors import RequestError, ParamError
 from .entities import (Entity, ServiceEntity, ServiceListEntity,
                        InstanceEntity, HostEntity, InstanceListEntity,
-                       ServerEntity, LeaderEntity, MetricsEntity)
+                       ServerEntity, LeaderEntity, MetricsEntity,
+                       LoginResponse, RoleListResponse, PermissionListResponse)
 from .params import (Param, ServiceRegisterParam, ServiceRemoveParam,
                      ServiceUpdateParam, ServiceGetParam, ServiceListParam,
                      SwitchUpdateParam, InstanceRegisterParam,
@@ -25,6 +26,42 @@ class Nacos(object):
         self.namespace_id = namespace_id
 
     def init_functions(self):
+        # 用户管理
+        self.winney.register(method="post",
+                             name="user_create",
+                             uri="/nacos/v1/auth/users")
+        self.winney.register(method="put",
+                             name="user_update",
+                             uri="/nacos/v1/auth/users")
+        self.winney.register(method="delete",
+                             name="user_delete",
+                             uri="/nacos/v1/auth/users")
+        self.winney.register(method="post",
+                             name="login",
+                             uri="/nacos/v1/auth/users/login")
+
+        # 角色管理
+        self.winney.register(method="post",
+                             name="role_create",
+                             uri="/nacos/v1/auth/roles")
+        self.winney.register(method="get",
+                             name="role_list",
+                             uri="/nacos/v1/auth/roles")
+        self.winney.register(method="delete",
+                             name="role_delete",
+                             uri="/nacos/v1/auth/roles")
+
+        # 权限管理
+        self.winney.register(method="post",
+                             name="permission_add",
+                             uri="/nacos/v1/auth/permissions")
+        self.winney.register(method="get",
+                             name="permission_list",
+                             uri="/nacos/v1/auth/permissions")
+        self.winney.register(method="delete",
+                             name="permission_delete",
+                             uri="/nacos/v1/auth/permissions")
+
         # 配置
         self.winney.register(method="get",
                              name="config_get",
@@ -107,6 +144,127 @@ class Nacos(object):
         params = param.json()
         params["namespaceId"] = self.namespace_id
         return params
+
+    # 登陆
+    def login(self, username, password) -> LoginResponse:
+        r = self.winney.login(data={
+            "username": username,
+            "password": password
+        })
+        if not r.ok():
+            raise RequestError("failed to login, http status = {}".format(
+                r.status_code))
+        return LoginResponse(**r.json())
+
+    # 创建用户
+    def user_create(self, username, password) -> bool:
+        r = self.winney.user_create(data={
+            "username": username,
+            "password": password
+        })
+        if not r.ok():
+            raise RequestError(
+                "failed to create user, http status = {}".format(
+                    r.status_code))
+        return True
+
+    # 更新用户信息
+    def user_update(self, username, old_password, new_password) -> bool:
+        r = self.winney.user_update(
+            data={
+                "username": username,
+                "oldPassword": old_password,
+                "newPassword": new_password
+            })
+        if not r.ok():
+            raise RequestError(
+                "failed to update user, http status = {}".format(
+                    r.status_code))
+        return True
+
+    # 删除用户
+    def user_delete(self, username, password) -> bool:
+        r = self.winney.user_delete(data={
+            "username": username,
+            "password": password
+        })
+        if not r.ok():
+            raise RequestError(
+                "failed to delete user, http status = {}".format(
+                    r.status_code))
+        return True
+
+    # 创建角色
+    def role_create(self, username, role) -> bool:
+        r = self.winney.role_create(data={"username": username, "role": role})
+        if not r.ok():
+            raise RequestError(
+                "failed to create role, http status = {}".format(
+                    r.status_code))
+        return True
+
+    # 获取用户的所有角色
+    def role_list(self, username, page=1, page_size=100) -> RoleListResponse:
+        r = self.winney.role_list(data={
+            "username": username,
+            "pageNo": page,
+            "pageSize": page_size
+        })
+        if not r.ok():
+            raise RequestError("failed to list role, http status = {}".format(
+                r.status_code))
+        return RoleListResponse(**r.json())
+
+    # 删除用户的角色
+    def role_delete(self, username, role) -> bool:
+        r = self.winney.role_delete(data={"username": username, "role": role})
+        if not r.ok():
+            raise RequestError(
+                "failed to delete role, http status = {}".format(
+                    r.status_code))
+        return True
+
+    # 给角色添加权限
+    def permission_add(self, role, resource, action) -> bool:
+        r = self.winney.permission_add(data={
+            "role": role,
+            "resource": resource,
+            "action": action
+        })
+        if not r.ok():
+            raise RequestError(
+                "failed to add permission, http status = {}".format(
+                    r.status_code))
+        return True
+
+    # 从角色删除权限
+    def permission_delete(self, role, resource, action) -> bool:
+        r = self.winney.permission_delete(data={
+            "role": role,
+            "resource": resource,
+            "action": action
+        })
+        if not r.ok():
+            raise RequestError(
+                "failed to delete permission, http status = {}".format(
+                    r.status_code))
+        return True
+
+    # 获取某个角色的权限
+    def permission_list(self,
+                        role,
+                        page=1,
+                        page_size=100) -> PermissionListResponse:
+        r = self.winney.permission_list(data={
+            "role": role,
+            "pageNo": page,
+            "pageSize": page_size
+        })
+        if not r.ok():
+            raise RequestError(
+                "failed to list permission, http status = {}".format(
+                    r.status_code))
+        return PermissionListResponse(**r.json())
 
     # 注册服务
     def service_register(self, param: ServiceRegisterParam) -> bool:

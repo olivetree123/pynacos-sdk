@@ -16,6 +16,38 @@ class Entity(object):
         return r
 
 
+class PermissionEntity(Entity):
+    def __init__(self, **kwargs):
+        self.role = kwargs["role"]
+        self.action = kwargs["action"]
+        self.resource = kwargs["resource"]
+
+
+class LoginResponse(Entity):
+    def __init__(self, **kwargs):
+        self.token_ttl = kwargs["tokenTtl"]
+        self.global_admin = kwargs["globalAdmin"]
+        self.access_token = kwargs["accessToken"]
+
+
+class RoleListResponse(Entity):
+    def __init__(self, **kwargs):
+        self.page = kwargs["pageNumber"]
+        self.total_page = kwargs["pagesAvailable"]
+        self.total_count = kwargs["totalCount"]
+        self.roles: List[str] = [item["role"] for item in kwargs["pageItems"]]
+
+
+class PermissionListResponse(Entity):
+    def __init__(self, **kwargs):
+        self.page = kwargs["pageNumber"]
+        self.total_page = kwargs["pagesAvailable"]
+        self.total_count = kwargs["totalCount"]
+        self.permissions: List[PermissionEntity] = [
+            PermissionEntity(**item) for item in kwargs["pageItems"]
+        ]
+
+
 class ServiceEntity(Entity):
     """服务"""
     def __init__(self, name, group_name, namespace_id, metadata, clusters,
